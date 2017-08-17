@@ -30,25 +30,50 @@ class Project2:
     def __init__(self):
         self.networks = [
             [
-                'lesmiserables',
-                'Les Misérables',
-                '../data/moreno_lesmis/out.moreno_lesmis_lesmis',
+                'amazoncopurchased100',
+                'Amazon Co-purchased Products 100',
+                '../data/com-amazon.ungraph.txt_100',
             ],
             [
-                'airport',
-                'US Airports',
-                '../data/opsahl-usairport/out.opsahl-usairport',
+                'amazoncopurchased200',
+                'Amazon Co-purchased Products 200',
+                '../data/com-amazon.ungraph.txt_200',
             ],
             [
-                'email',
-                'E-mails',
-                '../data/arenas-email/out.arenas-email',
+                'amazoncopurchased400',
+                'Amazon Co-purchased Products 400',
+                '../data/com-amazon.ungraph.txt_400',
             ],
             [
-                'hamsterster',
-                'Hamsterster friendships',
-                '../data/petster-friendships-hamster/out.petster-friendships-hamster-uniq',
+                'amazoncopurchased800',
+                'Amazon Co-purchased Products 800',
+                '../data/com-amazon.ungraph.txt_800',
             ],
+            [
+                'amazoncopurchased1600',
+                'Amazon Co-purchased Products 1600',
+                '../data/com-amazon.ungraph.txt_1600',
+            ],
+            [
+                'amazoncopurchased2000',
+                'Amazon Co-purchased Products 2000',
+                '../data/com-amazon.ungraph.txt_2000',
+            ],
+            [
+                'amazoncopurchased20000',
+                'Amazon Co-purchased Products 20.000',
+                '../data/com-amazon.ungraph.txt_20000',
+            ],
+            [
+                'amazoncopurchased_200000',
+                'Amazon Co-purchased Products 200.000',
+                '../data/com-amazon.ungraph.txt_200000',
+            ],
+            [
+                'amazoncopurchased',
+                'Amazon Co-purchased Products',
+                '../data/com-amazon.ungraph.txt',
+            ]
         ]
 
     # Run the scripts on every network
@@ -69,7 +94,7 @@ class Project2:
             # Source: http://konect.uni-koblenz.de/networks/wordnet-words
             # Import TSV file using Pandas
             # TSV -> Tab Separated Values
-            df = pd.read_table(datafile, sep=' ', header=None, comment='%')
+            df = pd.read_table(datafile, sep='	', header=None, comment='%')
             try:
                 G = nx.from_pandas_dataframe(df, 0, 1, 2)
             except:

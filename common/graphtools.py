@@ -13,11 +13,15 @@ import random
 import os
 import scipy.stats
 from itertools import permutations
-import plfit
+#import plfit
 import sys
-import third_party.plpva
+#import third_party.plpva
 import re
 import random
+import datetime
+
+# Decorator for calculating ellapsed time of function
+def timer
 
 # This class is used to generate the same plots available for
 # each network of http://konect.uni-koblenz.de
@@ -60,12 +64,13 @@ class GraphTools:
         plt.margins(0.1)
         if filename:
             print "Saving to " + filename + "..."
-            print ""
             plt.savefig(filename, format="pdf")
         else:
             plt.show()
         # Clear figure after showing or saving
         plt.clf()
+        print "End time: " + str(datetime.datetime.now())
+        print ""
 
     # Saves or prints a message, depending if filename is passed or not
     def save_or_print(self, text, filename = False):
@@ -84,6 +89,8 @@ class GraphTools:
             print "Skipping..."
             print ""
             return True
+        else:
+            print "Start time: " + str(datetime.datetime.now())
 
     # Read text file to string
     def read(self, filename):
@@ -120,12 +127,16 @@ class GraphTools:
         self.log("Plotting eigenvector centrality distribution...")
         if self.check_if_should_skip(filename):
             return
-        bc = nx.eigenvector_centrality(self.G).values()
-        bc = np.histogram(bc, bins=30)
-        plt.loglog(bc[1][0:-1], bc[0], 'o')
-        plt.title('Eigenvector Centrality distribution')
-        plt.xlabel('Eigenvector Centrality')
-        plt.ylabel('Frequency')
+        try:
+            bc = nx.eigenvector_centrality(self.G).values()
+            bc = np.histogram(bc, bins=30)
+            plt.loglog(bc[1][0:-1], bc[0], 'o')
+            plt.title('Eigenvector Centrality distribution')
+            plt.xlabel('Eigenvector Centrality')
+            plt.ylabel('Frequency')
+        except Exception, e:
+            print 'Failed calculating Eigenvector Centrality.'
+            print str(e)
         self.save_or_show(filename);
 
     # Plots Closeness centrality distribution
@@ -421,6 +432,7 @@ class GraphTools:
         return [valid_knn, valid_degrees]
 
     # Plots k_nn(i) vs. k(i), i.e., assortavity
+    @timer
     def knni_vs_ki_plot(self, filename = False):
         self.log("Plotting k_nn(i) vs. k(i)...")
         if self.check_if_should_skip(filename):
@@ -663,11 +675,15 @@ class GraphTools:
         visits_std_deviation = np.std(np_results, 0)
             
         # Plot number of visits vs. degree
-        plt.plot(nx.eigenvector_centrality(self.G).values(), visits_mean, 'o')
-        #plt.errorbar(nx.eigenvector_centrality(self.G).values(), visits_mean, marker = 'o', fmt = None, yerr = visits_std_deviation)
-        plt.title('Random walk visits vs. eigenvector centrality')
-        plt.xlabel('Eigenvector centrality')
-        plt.ylabel('Random walk visits')
+        try:
+            plt.plot(nx.eigenvector_centrality(self.G).values(), visits_mean, 'o')
+            #plt.errorbar(nx.eigenvector_centrality(self.G).values(), visits_mean, marker = 'o', fmt = None, yerr = visits_std_deviation)
+            plt.title('Random walk visits vs. eigenvector centrality')
+            plt.xlabel('Eigenvector centrality')
+            plt.ylabel('Random walk visits')
+        except Exception, e:
+            print "Error calculating eigenvector centrality"
+            print str(e)
         self.save_or_show(filename)
         
 
